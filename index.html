@@ -72,7 +72,9 @@
         <th>BBCode</th>
       </tr>
       <tr>
-        <td><textarea id="input"></textarea></td>
+        <td>
+          <textarea id="input"></textarea>
+        </td>
         <td>
           <div id="render"></div>
         </td>
@@ -85,9 +87,8 @@
       </tr>
     </table>
     <script>
-      var html = false;
       document.getElementById("input").oninput = () => {
-        var result = cleanse(document.getElementById("input").value);
+        var result = document.getElementById("input").value;
         var result2 = result;
         var HTMLreplacements = [ //yes, there are better ways. No, I do not care. Be happy it "works", but do not touch x.x
           //actual replacements
@@ -97,22 +98,23 @@
           ["\\n?^# (.*)$\\n?", "\n<h1>$1</h1>\n"],
           ["^(.+)\\n===+$\\n?", "\n<h1>$1</h1>\n"],
           ["^(.+)\\n---+$\\n?", "\n<h2>$1</h2>\n"],
-          ["\\*\\*(.*)\\*\\*", "<strong>$1</strong>"],
+          ["\\*\\*(.*?)\\*\\*", "<strong>$1</strong>"],
+          ["~~(.*?)~~", "<s>$1</s>"],
           ["^\\s+[*-+] (.*)$\\n?", "<li>$1</li>"],
           ["^---+$", "<hr />"],
           ["^___+$", "<hr />"],
           ["^\\*\\*\\*+$", "<hr />"],
-          ["\\*(.*)\\*", "<em>$1</em>"],
-          ["_(.*)_", "<em>$1</em>"],
+          ["\\*(.*?)\\*", "<em>$1</em>"],
+          ["_(.*?)_", "<em>$1</em>"],
           ["!\\[([^\\]]*)\\]\\(([^\\)]*)\\)", "<img src=\"$2\" alt=\"$1\">"],
           ["\\[([^\\]]*)\\]\\(([^\\)]*)\\)", "<a href=\"$2\">$1</a>"],
-          ["```([^]*)```", "<pre>$1</pre>"],
-          ["`([^`]*)`", "<code>$1</code>"],
+          ["```([^]*?)```", "<pre>$1</pre>"],
+          ["`([^`]*?)`", "<code>$1</code>"],
           //other
           ["\\n", "<br />"],
           ["<br \\/>", "\n<br />"],
           ["<\\/li>", "</li>\n"],
-          ["((?:<li>.*<\\/li>\\n?)+)", "<ul>\n$1</ul>\n"],
+          ["((?:<li>.*?<\\/li>\\n?)+)", "<ul>\n$1</ul>\n"],
           ["<h(\\d)>", "\n<h$1>"],
           ["<br \\/>\\n<h", "\n<h"],
           ["<\\/h(\\d)>\\n<br \\/>", "</h$1>\n"],
@@ -123,17 +125,18 @@
           ["\\n?^# (.*)$\\n?", "\n[size=20][b]$1[/b][/size]\n"],
           ["^(.+)\\n===+$\\n?", "\n[size=20][b]$1[/b][/size]\n"],
           ["^(.+)\\n---+$\\n?", "\n[size=16][b]$1[/b][/size]>\n"],
-          ["\\*\\*(.*)\\*\\*", "[b]$1[/b]"],
+          ["\\*\\*(.*?)\\*\\*", "[b]$1[/b]"],
+          ["~~(.*?)~~", "<s>$1</s>"],
           ["^\\s+[*-+] (.*)$\\n?", "[*]$1\n"],
           ["^---+$", "<hr />"],
           ["^___+$", "<hr />"],
           ["^\\*\\*\\*+$", "<hr />"],
-          ["[^\\[]\\*(.*[^\\]])\\*", "[i]$1[/i]"],
-          ["_(.*)_", "[i]$1[/i]"],
-          ["!\\[([^\\]]*)\\]\\(([^\\)]*)\\)", "[img]$1[/img]"],
-          ["\\[([^\\]]*)\\]\\(([^\\)]*)\\)", "[url=$2]$1[/url]"],
-          ["```([^]*)```", "[code]$1[/code]"],
-          ["`([^`]*)`", "[mono]$1[/mono]"],
+          ["[^\\[]?\\*(.*?[^\\]])\\*", "[i]$1[/i]"],
+          ["_(.*?)_", "[i]$1[/i]"],
+          ["!\\[([^\\]]*?)\\]\\(([^\\)]*?)\\)", "[img]$1[/img]"],
+          ["\\[([^\\]]*?)\\]\\(([^\\)]*?)\\)", "[url=$2]$1[/url]"],
+          ["```([^]*?)```", "[code]$1[/code]"],
+          ["`([^`]*?)`", "[mono]$1[/mono]"],
           ["((?:^\\[\\*\\].*$\\n?)+)", "[list]\n$1[/list]\n"],
         ]
         HTMLreplacements.map(replace);
@@ -150,19 +153,12 @@
           result = result.substring(1);
         }
         if (result2.startsWith('\n')) {
-          result2 = result.substring(1);
+          result2 = result2.substring(1);
         }
         document.getElementById("render").innerHTML = result;
         document.getElementById("raw").innerText = result;
         document.getElementById("bbcode").innerText = result2;
       }
-
-      function cleanse(text) {
-        var element = document.createElement('p');
-        element.innerText = text;
-        return element.innerHTML.replace(/<br>/gi, "\n");
-      }
-
     </script>
   </body>
 
