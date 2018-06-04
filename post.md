@@ -11,7 +11,8 @@ This is the result of about a hour of work. The converter uses Regular Expressio
 **bold**  
 _italics_  
 Inline `code`  
-```Code 
+```
+Code 
 blocks
 ```
 
