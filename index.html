@@ -1,5 +1,36 @@
 <!DOCTYPE html>
-<
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="author" content="_iPhoenix_" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <!-- Google Analytics :) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-109579764-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag("js", new Date), gtag("config", "UA-109579764-3")
+
+    </script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      td {
+        width: 25%;
+        padding: 0;
+        margin: 0;
+        overflow-wrap: break-word;
+        border: 1px solid black;
+        vertical-align: top
+      }
+
+      table {
+        width: 100%;
+        height: 100vh;
+        border-collapse: collapse;
         table-layout: fixed;
       }
 
@@ -29,6 +60,16 @@
         margin: 2px;
       }
 
+    </style>
+    <style> /* these are important! These make the ordered lists work! */
+      li[num]::before {
+        content: attr(num) ". ";
+        position: relative; left: -16px;
+      }
+      ol {
+        list-style: none; 
+        
+      }
     </style>
   </head>
 
@@ -70,6 +111,7 @@
           ["\\*\\*(.*?)\\*\\*", "<strong>$1</strong>"],
           ["~~(.*?)~~", "<s>$1</s>"],
           ["^\\s+[*-+] (.*)$\\n?", "<li>$1</li>"],
+          ["^\\s+(\\d+?)\\. (.*)$\\n?", "<li num='$1'>$2</li>"],
           ["^---+$", "<hr />"],
           ["^___+$", "<hr />"],
           ["^\\*\\*\\*+$", "<hr />"],
@@ -79,15 +121,18 @@
           ["\\[([^\\]]*)\\]\\(([^\\)]*)\\)", "<a href=\"$2\">$1</a>"],
           ["```\\n([^]*?)```", "<pre>$1</pre>"],
           ["`([^`]*?)`", "<code>$1</code>"],
+          ["((?:^\\> .*$\\n?)+)", "<blockquote>\n$1</blockquote>\n"],
           //other
           ["\\n", "<br />"],
           ["<br \\/>", "\n<br />"],
           ["<\\/li>", "</li>\n"],
           ["((?:<li>.*?<\\/li>\\n?)+)", "<ul>\n$1</ul>\n"],
+          ["((?:<li num='[0-9]+?'>.*?<\\/li>\\n?)+)", "<ol>\n$1</ol>\n"],
           ["<h(\\d)>", "\n<h$1>"],
           ["<br \\/>\\n<h", "\n<h"],
           ["<\\/h(\\d)>\\n<br \\/>", "</h$1>\n"],
-          ["\\n\\n", "\n"]
+          ["\\n\\n", "\n"],
+          ["^<br />> ", "<br />"]
         ]
         var BBcodereplacements = [
           ["\\n?^## (.*)$\\n?", "\n[size=16][b]$1[/b][/size]\n"],
@@ -107,6 +152,9 @@
           ["```\\n([^]*?)```", "[code]$1[/code]"],
           ["`([^`]*?)`", "[mono]$1[/mono]"],
           ["((?:^\\[\\*\\].*$\\n?)+)", "[list]\n$1[/list]\n"],
+          ["((?:^ \\d+\\. .*$\\n?)+)", "[list]\n$1[/list]\n"],
+          ["((?:^\\> .*$\\n?)+)", "[quote]\n$1[/quote]\n"],
+          ["^> ", ""]
         ]
         HTMLreplacements.map(replace);
         BBcodereplacements.map(replace2);
