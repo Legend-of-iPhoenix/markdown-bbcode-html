@@ -18,6 +18,11 @@ blocks
 
  * lists
  * more list (it joins adjacent list elements appropriately)  
+ 1. numbered list
+ 65536. oddly ordered numbered list (github doesn't like it but it's a markdown feature)
+ 
+> quote  
+> more quote
 
 [Links](https://legend-of-iphoenix.github.io/markdown-bbcode-html/)  
 Horizontal bars:
@@ -31,10 +36,9 @@ You can find the converter at [https://legend-of-iphoenix.github.io/markdown-bbc
 
 ---
 To-do
- * Block quotes
  * Somehow, colors???
  * Code cleanup
- * Bugfixing, particularly bugs with italics using asterisks.
+ * Bugfixing
  * Escaping? Somehow?
  * Nested lists? Somehow?
  * Make generated HTML a bit nicer-looking. (Apply formatting rules)
